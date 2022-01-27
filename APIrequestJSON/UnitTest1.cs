@@ -70,6 +70,26 @@ namespace APIrequestJSON
             byte[] result = client.DownloadData(requestImg);
             File.WriteAllBytes(Path.Combine("C:\\Users\\Пользователь\\source\\repos\\APIrequestJSON\\img.jpg"), result);
         }
-        
+        [Fact]
+        static void TestStatusCode()
+        {
+            string url = "http://api.openweathermap.org/data/2.5/find?q=London&units=metric&appid=c306ad20e3d780a22a50e7dd23900d02";
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+
+            System.Threading.Thread.Sleep(10000);
+            HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            System.Threading.Thread.Sleep(10000);
+            string response;
+            using (StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream()))
+            {
+                response = streamReader.ReadToEnd();
+            }
+            JsonFileResponse jsonFileResponse = JsonConvert.DeserializeObject<JsonFileResponse>(response);
+
+            string actual = jsonFileResponse.Cod;
+
+            Assert.Equal("200", actual);
+
+        }
     }
 }
