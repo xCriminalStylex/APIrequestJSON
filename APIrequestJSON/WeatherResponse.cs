@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace APIrequestJSON
 {
-    public class JsonFileResponse
+    public class WeatherResponse
     {
         public string Message { get; set; }
         public string Cod { get; set; }

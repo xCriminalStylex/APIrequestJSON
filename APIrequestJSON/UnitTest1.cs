@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace APIrequestJSON
 {
-    public class UnitTest1
+    public class TestAPIrequest
     {
 
         [Fact]
@@ -46,6 +46,7 @@ namespace APIrequestJSON
             System.Threading.Thread.Sleep(10000);
             driver.Close();
         }
+        
         [Fact]
         public void TestUpLoadImg()
         {
@@ -57,7 +58,7 @@ namespace APIrequestJSON
             {
                 {"login", "jofafeg989@nahetech.com" },
                 {"password", "123456789" },
-                 {"avatar", "C:\\Users\\Пользователь\\source\\repos\\APIrequest\\venus.jpg" }
+                 {"avatar", "C:\\Users\\Пользователь\\source\\repos\\APIrequestJSON\\venus.jpg" }
             };
 
             var response = APIhelper.UpLoadImgAPIrequest(body, headers, "http://users.bugred.ru/tasks/rest/addavatar/", Method.POST);
@@ -71,7 +72,7 @@ namespace APIrequestJSON
             File.WriteAllBytes(Path.Combine("C:\\Users\\Пользователь\\source\\repos\\APIrequestJSON\\img.jpg"), result);
         }
         [Fact]
-        static void TestStatusCode()
+        static void TestStatusCodeWeather()
         {
             string url = "http://api.openweathermap.org/data/2.5/find?q=London&units=metric&appid=c306ad20e3d780a22a50e7dd23900d02";
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -84,11 +85,32 @@ namespace APIrequestJSON
             {
                 response = streamReader.ReadToEnd();
             }
-            JsonFileResponse jsonFileResponse = JsonConvert.DeserializeObject<JsonFileResponse>(response);
+            WeatherResponse jsonFileResponse = JsonConvert.DeserializeObject<WeatherResponse>(response);
 
             string actual = jsonFileResponse.Cod;
 
             Assert.Equal("200", actual);
+
+        }
+        [Fact]
+        static void TestStatusCodeExample()
+        {
+            string url = "http://dummy.restapiexample.com/api/v1/employees";
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+
+            System.Threading.Thread.Sleep(2000);
+            HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            System.Threading.Thread.Sleep(2000);
+            string response;
+            using (StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream()))
+            {
+                response = streamReader.ReadToEnd();
+            }
+            RestApiExample jsonFileResponse = JsonConvert.DeserializeObject<RestApiExample>(response);
+
+            string actual = jsonFileResponse.status;
+
+            Assert.Equal("success", actual);
 
         }
     }
